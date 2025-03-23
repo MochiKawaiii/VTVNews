@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VTV News - Tìm kiếm với NewsAPI</title>
+    <meta name="description" content="Tìm kiếm tin tức Việt Nam với NewsAPI">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/search.css">
+    <style>
+        .search-form-container {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .search-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .search-form input,
+        .search-form select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .search-form input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-form input[type="date"] {
+            width: 180px;
+        }
+
+        .search-form select {
+            width: 150px;
+        }
+
+        .search-form button {
+            background-color: #b63331;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .search-form button:hover {
+            background-color: #a02e2c;
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .loading-text {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #b63331;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(182, 51, 49, 0.2);
+            border-radius: 50%;
+            border-top-color: #b63331;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .search-info {
+            margin-bottom: 15px;
+            color: #666;
+            font-style: italic;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="top-header">
+            <div class="inner-container">
+                <div class="logo">
+                    <a href="/">
+                        <img src="/images/logo.png" alt="VTV News">
+                    </a>
+                </div>
+                <div class="top-right">
+                    <div class="social-links">
+                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <div class="inner-container">
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="/">Trang chủ</a></li>
+                    <li class="nav-item"><a href="/?category=general">Thời sự</a></li>
+                    <li class="nav-item"><a href="/?category=business">Kinh tế</a></li>
+                    <li class="nav-item"><a href="/?category=entertainment">Giải trí</a></li>
+                    <li class="nav-item active"><a href="/newsapi.html">NewsAPI</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="inner-container">
+            <div class="search-form-container">
+                <h2>Tìm kiếm tin tức với NewsAPI</h2>
+                <p class="search-info">Mặc định: Tìm kiếm các tin tức có từ khóa "vietnam" trong 15 ngày qua</p>
+                <form id="newsapi-search" class="search-form">
+                    <input type="text" id="search-query" name="query" value="vietnam" placeholder="Nhập từ khóa tìm kiếm..." required>
+                    <input type="date" id="search-from-date" name="fromDate" placeholder="Từ ngày">
+                    <select id="search-sort-by" name="sortBy">
+                        <option value="popularity">Phổ biến nhất</option>
+                        <option value="relevancy">Liên quan nhất</option>
+                        <option value="publishedAt">Mới nhất</option>
+                    </select>
+                    <button type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+
+            <div id="news-results"></div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="inner-container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="/images/logo.png" alt="VTV News">
+                </div>
+                <div class="footer-info">
+                    <p>&copy; 2025 VTV News. Đài Truyền Hình Việt Nam</p>
+                    <p>Địa chỉ: 43 Nguyễn Chí Thanh, Ba Đình, Hà Nội</p>
+                    <p>Điện thoại: 0988 671 671</p>
+                    <p>Email: contact@vtv.vn</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/newsapi-client.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById('newsapi-search');
+            const resultsContainer = document.getElementById('news-results');
+
+            // Show loading indicator
+            function showLoading() {
+                resultsContainer.innerHTML = `
+                    <div class="loading-container">
+                        <div class="loading-text">Đang tải tin tức mới nhất...</div>
+                        <div class="loading-spinner"></div>
+                    </div>
+                `;
+            }
+
+            // Show error message
+            function showError(message) {
+                resultsContainer.innerHTML = `
+                    <div class="error-message">
+                        <div class="error-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>${message}</h3>
+                        <button id="retry-button" class="btn-retry">Thử lại</button>
+                    </div>
+                `;
+
+                document.getElementById('retry-button').addEventListener('click', () => {
+                    const query = document.getElementById('search-query').value.trim() || 'vietnam';
+                    fetchNews(query);
+                });
+            }
+
+            // Fetch news with the given query
+            async function fetchNews(query, fromDate, sortBy) {
+                showLoading();
+
+                try {
+                    const newsData = await window.vtvNewsApiClient.fetchNewsWithVietnamDefault({
+                        query: query,
+                        fromDate: fromDate,
+                        sortBy: sortBy
+                    });
+
+                    if (newsData && newsData.articles && newsData.articles.length > 0) {
+                        window.vtvNewsApiClient.renderNewsArticles(
+                            newsData.articles,
+                            query,
+                            resultsContainer
+                        );
+                    } else {
+                        showError(`Không tìm thấy kết quả nào cho "${query}"`);
+                    }
+                } catch (error) {
+                    console.error('Error fetching news:', error);
+                    showError('Có lỗi khi tải tin tức. Vui lòng thử lại sau.');
+                }
+            }
+
+            // Handle form submission
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const query = document.getElementById('search-query').value.trim() || 'vietnam';
+                const fromDate = document.getElementById('search-from-date').value;
+                const sortBy = document.getElementById('search-sort-by').value;
+
+                fetchNews(query, fromDate, sortBy);
+            });
+
+            // Load news on page load
+            fetchNews('vietnam');
+        });
+    </script>
+</body>
+</html>

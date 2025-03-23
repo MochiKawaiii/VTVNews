@@ -1,0 +1,212 @@
+/* Add these styles at the end of the file */
+
+/* Advanced Search Form */
+.search-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.advanced-search-form {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.search-form-title {
+  color: var(--primary-color);
+  font-size: 18px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.search-form .form-group {
+  margin-bottom: 15px;
+}
+
+.search-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: var(--secondary-color);
+}
+
+.search-form input[type="text"],
+.search-form input[type="date"],
+.search-form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.search-form select {
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.search-button,
+.reset-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.search-button {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.search-button:hover {
+  background-color: #992a28;
+}
+
+.reset-button {
+  background-color: #e0e0e0;
+  color: var(--secondary-color);
+}
+
+.reset-button:hover {
+  background-color: #d0d0d0;
+}
+
+.search-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  color: var(--medium-gray);
+  font-size: 14px;
+}
+
+.search-count,
+.search-date-range,
+.search-sort,
+.search-filter {
+  background-color: #f5f5f5;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+/* Make the search page responsive */
+@media (max-width: 992px) {
+  .search-container {
+    grid-template-columns: 1fr;
+  }
+
+  .search-results-container {
+    order: 2;
+  }
+
+  .search-sidebar {
+    order: 1;
+  }
+}
+
+/* Clean News Style - additional styles */
+.news-list-clean {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.news-item.clean-style {
+    position: relative;
+}
+
+.news-item.clean-style:not(:last-child)::after {
+    content: "";
+    height: 1px;
+    background-color: #e5e5e5;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.news-meta-details {
+    color: #333;
+}
+
+.news-source-line,
+.news-author-line,
+.news-date-line {
+    margin-bottom: 6px;
+}
+
+.news-description-line {
+    margin: 10px 0;
+}
+
+.view-original {
+    margin: 15px 0 5px;
+}
+
+.view-original-link {
+    color: #b63331;
+    font-weight: 500;
+}
+
+/* Error Message Styling */
+.error-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 50px auto;
+    max-width: 800px;
+}
+
+.error-icon {
+    font-size: 50px;
+    color: #b63331;
+    margin-bottom: 20px;
+}
+
+.error-message h3 {
+    color: #31373e;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.error-message p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.btn-retry {
+    background-color: #b63331;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-retry:hover {
+    background-color: #a02e2c;
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VTV News - Error</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <header class="main-header">
+        <div class="top-header">
+            <div class="inner-container">
+                <div class="logo">
+                    <a href="/">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="VTV News">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main-content">
+        <div class="inner-container">
+            <div class="error-message">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3>{{ error }}</h3>
+                <button onclick="window.location.href='/news'" class="btn-retry">Thử lại</button>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

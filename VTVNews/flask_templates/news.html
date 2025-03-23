@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VTV News - {{ query }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="top-header">
+            <div class="inner-container">
+                <div class="logo">
+                    <a href="/">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="VTV News">
+                    </a>
+                </div>
+                <div class="top-right">
+                    <div class="search-box">
+                        <form action="/news" method="get">
+                            <input type="text" name="q" value="{{ query }}" placeholder="Tìm kiếm tin tức Việt Nam..." required>
+                            <button type="submit"><i class="fas fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main-content">
+        <div class="inner-container">
+            <section class="search-results">
+                <h2 class="section-title">Kết quả tìm kiếm: "{{ query }}" ({{ total }} kết quả)</h2>
+                <div class="news-list news-list-clean">
+                    {% for article in articles %}
+                    <div class="news-item clean-style">
+                        <h3 class="news-title">{{ article.title }}</h3>
+
+                        <div class="news-meta-details">
+                            <div class="news-source-line">
+                                <strong>Nguồn:</strong> {{ article.source }}
+                            </div>
+                            <div class="news-author-line">
+                                <strong>Tác giả:</strong> {{ article.author }}
+                            </div>
+                            <div class="news-date-line">
+                                <strong>Thời gian đăng:</strong> {{ article.published_at }}
+                            </div>
+                            <div class="news-description-line">
+                                <strong>Mô tả:</strong> {{ article.description }}
+                            </div>
+                            <div class="view-original">
+                                <a href="{{ article.url }}" target="_blank" class="view-original-link">Xem bài báo gốc</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

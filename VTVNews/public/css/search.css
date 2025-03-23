@@ -1,0 +1,125 @@
+/* Advanced Search Form */
+.advanced-search {
+    background-color: #f4f5f6;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.advanced-search .form-group {
+    margin-bottom: 15px;
+}
+
+.advanced-search label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.advanced-search input,
+.advanced-search select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.advanced-search .btn-search {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.advanced-search .btn-search:hover {
+    background-color: #a02e2c;
+}
+
+/* Search Results */
+.search-results {
+    margin-top: 30px;
+}
+
+.section-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 8px;
+}
+
+/* Clean Style Layout - Matches screenshot layout */
+.news-list-clean {
+    margin-top: 20px;
+}
+
+.news-item.clean-style {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 20px 0;
+    margin-bottom: 10px;
+}
+
+.news-item.clean-style:last-child {
+    border-bottom: none;
+}
+
+.news-item.clean-style .news-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.news-meta-details {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.news-meta-details div {
+    margin-bottom: 8px;
+}
+
+.news-meta-details strong {
+    font-weight: bold;
+    display: inline-block;
+    min-width: 110px;
+}
+
+.news-source-line, .news-author-line, .news-date-line {
+    display: flex;
+    align-items: baseline;
+}
+
+.news-description-line {
+    margin-top: 5px;
+}
+
+.view-original {
+    margin-top: 15px;
+}
+
+.view-original-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.view-original-link:hover {
+    text-decoration: underline;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    .news-meta-details strong {
+        min-width: auto;
+        margin-right: 10px;
+    }
+
+    .news-item.clean-style .news-title {
+        font-size: 18px;
+    }
+}

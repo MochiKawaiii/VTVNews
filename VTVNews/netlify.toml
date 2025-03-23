@@ -1,0 +1,61 @@
+[build]
+  command = "bun install && bun build ./index.ts --outdir ./dist && cp -r public/* dist/"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[dev]
+  command = "bun run dev"
+  port = 5000
+  targetPort = 5000
+
+# SPA fallback for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build.environment]
+  NODE_VERSION = "18"
+  BUN_VERSION = "1.x"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+  included_files = ["netlify/functions/**"]
+
+# Allow external API access
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
+
+# Define cache policy for function responses
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Cache-Control = "public, max-age=300"
+
+# Remote image sources
+[[images.remote_options]]
+  pattern = "cdn-images\\.vtv\\.vn/.*"
+  url = "https://cdn-images.vtv.vn"
+
+[[images.remote_options]]
+  pattern = "upload\\.wikimedia\\.org/.*"
+  url = "https://upload.wikimedia.org"
+
+[[images.remote_options]]
+  pattern = "www\\.vtv\\.vn/.*"
+  url = "https://www.vtv.vn"
+
+[[images.remote_options]]
+  pattern = "vtv\\.vn/.*"
+  url = "https://vtv.vn"
+
+[[images.remote_options]]
+  pattern = "newsapi\\.org/.*"
+  url = "https://newsapi.org"
+
+# Remove the direct API proxy as we're using serverless functions now

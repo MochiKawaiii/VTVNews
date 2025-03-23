@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VTV News - Tin tức mới nhất từ Việt Nam</title>
+    <meta name="description" content="Tin tức mới nhất, nhanh nhất tại Việt Nam và thế giới">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <style>
+        /* Base styles */
+        :root {
+            --primary-color: #b63331;
+            --secondary-color: #31373e;
+            --text-color: #333;
+            --light-gray: #f5f6f7;
+            --medium-gray: #9aa3a8;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--light-gray);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--primary-color);
+        }
+
+        ul, ol {
+            list-style-type: none;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        .inner-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header styles */
+        .main-header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .top-header {
+            padding: 15px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .top-header .inner-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .site-vietnam-focus {
+            font-size: 18px;
+            margin-left: 10px;
+            color: var(--primary-color);
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .social-links {
+            display: flex;
+            margin-right: 20px;
+        }
+
+        .social-links a {
+            color: var(--secondary-color);
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box form {
+            display: flex;
+        }
+
+        .search-box input {
+            padding: 8px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        .search-box button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--medium-gray);
+        }
+
+        .search-box button:hover {
+            color: var(--primary-color);
+        }
+
+        .advanced-search-link {
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        .flask-search-button {
+            font-size: 12px;
+            color: #b63331;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .flask-search-button:hover {
+            text-decoration: underline;
+        }
+
+        .flask-search-button i {
+            font-size: 10px;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background-color: var(--primary-color);
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-item a {
+            display: block;
+            color: #fff;
+            padding: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        .nav-item a:hover, .nav-item.active a {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Loading container */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 70vh;
+            text-align: center;
+        }
+
+        .loading-logo {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .loading-text {
+            font-size: 18px;
+            color: #b63331;
+            margin-bottom: 20px;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(182, 51, 49, 0.2);
+            border-radius: 50%;
+            border-top-color: #b63331;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Basic styles for displaying news */
+        .main-content {
+            padding: 30px 0;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .featured-section {
+            margin-bottom: 30px;
+        }
+
+        .featured-news {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .featured-main {
+            position: relative;
+            height: 400px;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .featured-main-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .featured-main-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: #fff;
+        }
+
+        .featured-main-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .featured-main-desc {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .featured-secondary {
+            display: grid;
+            grid-template-rows: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .featured-item {
+            position: relative;
+            height: 123px;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .featured-item-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .featured-item-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 15px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: #fff;
+        }
+
+        .featured-item-title {
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .news-list {
+            display: grid;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .news-item {
+            display: flex;
+            background-color: #fff;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .news-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .news-image {
+            flex: 0 0 200px;
+            height: 150px;
+        }
+
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .news-content {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .news-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .news-description {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 14px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #9aa3a8;
+            font-size: 13px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 22px;
+            text-transform: uppercase;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 30px;
+            color: var(--primary-color);
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Footer styles */
+        .main-footer {
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 50px 0 0;
+            margin-top: 30px;
+        }
+
+        .main-footer .inner-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .footer-logo {
+            margin-bottom: 20px;
+        }
+
+        .footer-logo img {
+            height: 40px;
+        }
+
+        .footer-info p {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #ddd;
+        }
+
+        .footer-nav h3, .footer-contact h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .footer-nav ul {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-nav a {
+            color: #ddd;
+            font-size: 14px;
+        }
+
+        .footer-nav a:hover {
+            color: #fff;
+        }
+
+        .footer-contact .social-links {
+            margin-top: 15px;
+        }
+
+        .footer-contact .social-links a {
+            color: #ddd;
+            margin-right: 15px;
+            font-size: 20px;
+        }
+
+        .footer-contact .social-links a:hover {
+            color: #fff;
+        }
+
+        .copyright {
+            margin-top: 30px;
+            padding: 20px 0;
+            background-color: rgba(0, 0, 0, 0.2);
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .featured-news {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .featured-main {
+                height: 300px;
+            }
+
+            .featured-secondary {
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: 1fr;
+            }
+
+            .news-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .main-footer .inner-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+            }
+
+            .featured-secondary {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(3, 180px);
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .news-item {
+                flex-direction: column;
+            }
+
+            .news-image {
+                flex: 0 0 200px;
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .top-header .inner-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .top-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .main-footer .inner-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="top-header">
+                <div class="inner-container">
+                    <div class="top-left">
+                        <a href="/" class="logo" title="VTV News - Đài Truyền Hình Việt Nam">
+                            <img src="/images/logo.png" alt="VTV News Logo">
+                            <span class="site-vietnam-focus">🇻🇳 TIN TỨC VIỆT NAM</span>
+                        </a>
+                    </div>
+                    <div class="top-right">
+                        <div class="social-links">
+                            <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        </div>
+                        <div class="search-box">
+                            <form id="search-form">
+                                <input type="text" name="q" id="search-input" placeholder="Tìm kiếm tin tức Việt Nam..." value="vietnam" required>
+                                <button type="submit"><i class="fas fa-search"></i></button>
+                            </form>
+                            <div class="advanced-search-link">
+                                <a href="/newsapi.html" id="flask-search" class="flask-search-button">Tìm kiếm với NewsAPI <i class="fas fa-external-link-alt"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <div class="inner-container">
+                    <ul class="nav-menu">
+                        <li class="nav-item active">
+                            <a href="/" title="Trang chủ">Trang chủ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" title="Thời sự" data-category="general">Thời sự</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" title="Kinh tế" data-category="business">Kinh tế</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" title="Thế giới" data-category="world">Thế giới</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" title="Thể thao" data-category="sports">Thể thao</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" title="Giải trí" data-category="entertainment">Giải trí</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <div class="inner-container">
+                <div class="loading-container">
+                    <img src="/images/logo.png" alt="VTV News Logo" class="loading-logo">
+                    <div class="loading-text">Đang tải tin tức mới nhất...</div>
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="main-footer">
+            <div class="inner-container">
+                <div class="footer-logo">
+                    <a href="/" title="VTV News - Đài Truyền Hình Việt Nam">
+                        <img src="/images/logo.png" alt="VTV News Logo">
+                    </a>
+                </div>
+                <div class="footer-info">
+                    <p>© 2025 VTV News. Đài Truyền Hình Việt Nam</p>
+                    <p>Địa chỉ: 43 Nguyễn Chí Thanh, Ba Đình, Hà Nội</p>
+                    <p>Điện thoại: 0988 671 671</p>
+                    <p>Email: contact@vtv.vn</p>
+                </div>
+                <div class="footer-nav">
+                    <h3>Nguồn tin tức Việt Nam</h3>
+                    <ul class="vietnam-sources">
+                        <li><a href="https://vtv.vn" target="_blank">VTV.vn</a></li>
+                        <li><a href="https://vnexpress.net" target="_blank">VnExpress</a></li>
+                        <li><a href="https://tuoitre.vn" target="_blank">Tuổi Trẻ</a></li>
+                        <li><a href="https://thanhnien.vn" target="_blank">Thanh Niên</a></li>
+                        <li><a href="https://vietnamnet.vn" target="_blank">VietnamNet</a></li>
+                        <li><a href="https://dantri.com.vn" target="_blank">Dân Trí</a></li>
+                    </ul>
+                </div>
+                <div class="footer-nav">
+                    <h3>Danh mục</h3>
+                    <ul>
+                        <li><a href="#" data-category="general">Thời sự</a></li>
+                        <li><a href="#" data-category="business">Kinh tế</a></li>
+                        <li><a href="#" data-category="world">Thế giới</a></li>
+                        <li><a href="#" data-category="sports">Thể thao</a></li>
+                        <li><a href="#" data-category="entertainment">Giải trí</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Kết nối với chúng tôi</h3>
+                    <div class="social-links">
+                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <div class="inner-container">
+                    <p>© 2025 VTV News. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Add these scripts for client-side API access -->
+    <script src="/js/main.js"></script>
+    <script src="/js/api-client.js"></script>
+    <script src="/js/newsapi-client.js"></script>
+    <script>
+        // Global variables to store state
+        let currentCategory = '';
+
+        // Load news from API on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Set up event listeners
+            setupEventListeners();
+
+            // Load initial news data
+            await loadNews();
+        });
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Add event listeners for category links
+            document.querySelectorAll('[data-category]').forEach(link => {
+                link.addEventListener('click', async (e) => {
+                    e.preventDefault();
+
+                    // Update active category
+                    currentCategory = e.target.dataset.category;
+
+                    // Update active nav item
+                    document.querySelectorAll('.nav-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+
+                    e.target.closest('.nav-item')?.classList.add('active');
+
+                    // Show loading indicator
+                    showLoading();
+
+                    // Load news for this category
+                    await loadNews();
+                });
+            });
+
+            // Add event listener for search form
+            document.getElementById('search-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const query = document.getElementById('search-input').value.trim();
+
+                if (query) {
+                    // Show loading indicator
+                    showLoading();
+
+                    // Search for news
+                    await searchNews(query);
+                }
+            });
+        }
+
+        // Show loading indicator
+        function showLoading() {
+            const mainContent = document.querySelector('.main-content');
+            mainContent.innerHTML = `
+                <div class="inner-container">
+                    <div class="loading-container">
+                        <img src="/images/logo.png" alt="VTV News Logo" class="loading-logo">
+                        <div class="loading-text">Đang tải tin tức mới nhất...</div>
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Load news data
+        async function loadNews() {
+            try {
+                let newsData;
+
+                if (currentCategory) {
+                    // Load news for a specific category
+                    newsData = await window.vtvNewsApi.getTopHeadlines({
+                        category: currentCategory,
+                        pageSize: 20
+                    });
+                } else {
+                    // Load top headlines
+                    newsData = await window.vtvNewsApi.getTopHeadlines({
+                        pageSize: 20
+                    });
+                }
+
+                if (newsData && newsData.articles && newsData.articles.length > 0) {
+                    // Render the news
+                    renderNews(newsData.articles);
+                } else {
+                    throw new Error('No articles found');
+                }
+            } catch (error) {
+                console.error('Error loading news:', error);
+                showErrorMessage('Có lỗi khi tải tin tức. Vui lòng thử lại sau.');
+            }
+        }
+
+        // Search for news
+        async function searchNews(query) {
+            try {
+                // Ensure 'vietnam' is included in the search query if not already present
+                if (query.toLowerCase() !== 'vietnam' && !query.toLowerCase().includes('vietnam')) {
+                    query = `${query} vietnam`;
+                }
+
+                const newsData = await window.vtvNewsApi.searchVietnameseNews({
+                    query: query,
+                    pageSize: 20
+                });
+
+                if (newsData && newsData.articles && newsData.articles.length > 0) {
+                    // Render the search results
+                    renderSearchResults(newsData.articles, query);
+                } else {
+                    showErrorMessage(`Không tìm thấy kết quả nào cho "${query}"`);
+                }
+            } catch (error) {
+                console.error('Error searching news:', error);
+                showErrorMessage('Có lỗi khi tìm kiếm tin tức. Vui lòng thử lại sau.');
+            }
+        }
+
+        // Show error message
+        function showErrorMessage(message) {
+            const mainContent = document.querySelector('.main-content');
+            mainContent.innerHTML = `
+                <div class="inner-container">
+                    <div class="error-message">
+                        <div class="error-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>${message}</h3>
+                        <p>Hệ thống đang sử dụng dữ liệu dự phòng để hiển thị tin tức.</p>
+                        <button id="retry-button" class="btn-retry">Thử lại</button>
+                    </div>
+                </div>
+            `;
+
+            // Add event listener to the retry button
+            setTimeout(() => {
+                const retryButton = document.getElementById('retry-button');
+                if (retryButton) {
+                    retryButton.addEventListener('click', async () => {
+                        showLoading();
+                        try {
+                            await loadNews();
+                        } catch (error) {
+                            console.error('Retry failed:', error);
+                            showErrorMessage('Không thể kết nối đến máy chủ. Đang hiển thị tin tức dự phòng.');
+                        }
+                    });
+                }
+            }, 100);
+        }
+
+        // Render news data
+        function renderNews(articles) {
+            // Make sure we have at least 5 articles
+            if (articles.length < 5) {
+                articles = [...articles, ...Array(5 - articles.length).fill(null)].map(article =>
+                    article || {
+                        title: 'Tin tức mới nhất từ Việt Nam',
+                        description: 'Đang cập nhật tin tức...',
+                        urlToImage: window.vtvNewsApi.getPlaceholderImage(),
+                        url: '#',
+                        source: { name: 'VTV News' },
+                        formattedDate: new Date().toLocaleDateString('vi-VN')
+                    }
+                );
+            }
+
+            const mainArticle = articles[0];
+            const featuredArticles = articles.slice(1, 4);
+            const remainingArticles = articles.slice(4);
+
+            const mainContent = document.querySelector('.main-content');
+            mainContent.innerHTML = `
+                <div class="inner-container">
+                    <section class="featured-section">
+                        <h2 class="section-title">${currentCategory ? getCategoryName(currentCategory) : 'Tin tức nổi bật'}</h2>
+                        <div class="featured-news">
+                            <div class="featured-main">
+                                <a href="${mainArticle.url}" target="_blank">
+                                    <img src="${mainArticle.urlToImage || window.vtvNewsApi.getPlaceholderImage()}" alt="${mainArticle.title}" class="featured-main-img">
+                                    <div class="featured-main-content">
+                                        <h3 class="featured-main-title">${mainArticle.title}</h3>
+                                        <p class="featured-main-desc">${mainArticle.description}</p>
+                                        <div class="news-meta">
+                                            <span>${mainArticle.source.name}</span>
+                                            <span>${mainArticle.formattedDate || ''}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="featured-secondary">
+                                ${featuredArticles.map(article => `
+                                    <div class="featured-item">
+                                        <a href="${article.url}" target="_blank">
+                                            <img src="${article.urlToImage || window.vtvNewsApi.getPlaceholderImage()}" alt="${article.title}" class="featured-item-img">
+                                            <div class="featured-item-content">
+                                                <h4 class="featured-item-title">${article.title}</h4>
+                                            </div>
+                                        </a>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="recent-news">
+                        <h2 class="section-title">Tin tức mới nhất</h2>
+                        <div class="news-list">
+                            ${remainingArticles.map(article => `
+                                <div class="news-item">
+                                    <a href="${article.url}" target="_blank" class="news-link">
+                                        <div class="news-image">
+                                            <img src="${article.urlToImage || window.vtvNewsApi.getPlaceholderImage()}" alt="${article.title}">
+                                        </div>
+                                        <div class="news-content">
+                                            <h3 class="news-title">${article.title}</h3>
+                                            <p class="news-description">${article.description}</p>
+                                            <div class="news-meta">
+                                                <span class="news-source">${article.source.name}</span>
+                                                <span class="news-date">${article.formattedDate || ''}</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+
+        // Render search results
+        function renderSearchResults(articles, query) {
+            const mainContent = document.querySelector('.main-content');
+            mainContent.innerHTML = `
+                <div class="inner-container">
+                    <section class="search-results">
+                        <h2 class="section-title">Kết quả tìm kiếm: "${query}" (${articles.length} kết quả)</h2>
+                        <div class="news-list news-list-clean">
+                            ${articles.map(article => `
+                                <div class="news-item clean-style">
+                                    <h3 class="news-title">${article.title}</h3>
+
+                                    <div class="news-meta-details">
+                                        <div class="news-source-line">
+                                            <strong>Nguồn:</strong> ${article.source.name}
+                                        </div>
+                                        <div class="news-author-line">
+                                            <strong>Tác giả:</strong> ${article.author || 'None'}
+                                        </div>
+                                        <div class="news-date-line">
+                                            <strong>Thời gian đăng:</strong> ${article.formattedDate || ''}
+                                        </div>
+                                        <div class="news-description-line">
+                                            <strong>Mô tả:</strong> ${article.description}
+                                        </div>
+                                        <div class="view-original">
+                                            <a href="${article.url}" target="_blank" class="view-original-link">Xem bài báo gốc</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+
+        // Get category name from ID
+        function getCategoryName(categoryId) {
+            const categories = {
+                'general': 'Thời sự',
+                'business': 'Kinh tế',
+                'entertainment': 'Giải trí',
+                'health': 'Sức khỏe',
+                'science': 'Khoa học',
+                'sports': 'Thể thao',
+                'technology': 'Công nghệ',
+                'world': 'Thế giới'
+            };
+
+            return categories[categoryId] || 'Tin tức';
+        }
+    </script>
+</body>
+</html>
